@@ -50,18 +50,18 @@ app.use((req, res, next) => {
   next(e)
 })
 
-
-// Error handler
-app.use(function (err, req, res, next) { //Note the 4 parameters!
-  // the default status is 500 Internal Server Error
+app.use(function(err, req, res, next){
+  // the default status is 500 internal Server Error
   let status = err.status || 500;
-  let message = err.msg;
+  let message = err.message;
 
   // set the status and alert the user
   return res.status(status).json({
-    error: { message, status }
+    error: {message, status}
   });
 });
+
+
 
 app.listen(3000, () => {
   console.log("Server running on port 3000")

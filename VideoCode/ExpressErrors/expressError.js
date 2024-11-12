@@ -1,7 +1,7 @@
 class ExpressError extends Error {
-  constructor(msg, status) {
+  constructor(msg, status){
     super();
-    this.msg = msg;
+    this.message = msg;
     this.status = status;
     console.error(this.stack)
   }
