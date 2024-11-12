@@ -15,8 +15,11 @@ app.get('/candies', function(req, res){
 })
 
 app.post('/candies', function(req, res){
+  if(req.body.name.toLowerCase() === 'circus peanuts'){
+    return res.status(403).json( { msg: 'Horrible Choice. Circus Peanuts Forbidden!' } )
+  }
   CANDIES.push(req.body)
-  return res.json(CANDIES)
+  return res.status(201).json(CANDIES);
 })
 
 app.listen(3000, () => {
