@@ -4,22 +4,19 @@ const app = express();
 
 app.use(express.json());
 
-
 const CANDIES = [
-  { name: 'snickers', qty: 43, price: 1.50 },
-  { name: 'skittles', qty: 26, price: 0.99 }
+  {name: 'snickers', qty: 43, price: 1.50},
+  {name: 'skittles', qty: 23, price: 0.99},
+  {name: 'milky way', qty: 10, price: 1.25}
 ]
 
-app.get('/candies', (req, res) => {
-  res.json(CANDIES);
+app.get('/candies', function(req, res){
+  return res.json(CANDIES);
 })
 
-app.post('/candies', (req, res) => {
-  if (req.body.name.toLowerCase() === "circus peanuts") {
-    res.status(403).json({ msg: "HORRIBLE CHOICE.  CIRCUS PEANUTS FORBIDDEN!" })
-  }
-  CANDIES.push(req.body);
-  res.status(201).json(CANDIES);
+app.post('/candies', function(req, res){
+  CANDIES.push(req.body)
+  return res.json(CANDIES)
 })
 
 app.listen(3000, () => {

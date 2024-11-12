@@ -1,69 +1,55 @@
 const express = require('express');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', function(req, res){
+  res.send("I am the homepage")
+})
 
 // To parse http request body on each request:
-app.use(express.json()); //For JSON
-app.use(express.urlencoded({ extended: true })); //For Form Data
-
-app.get('/', (req, res) => {
-  res.send("HOMEPAGE!")
+app.get('/dogs', function(req, res){
+  console.log('You asked for dogs')
+  console.log(req)
+  res.send('Woof Woof')
 })
 
-app.get('/dogs', (req, res) => {
-  console.log("YOU ASKED FOR /DOGS!")
-  res.send("<h1>I AM DOG WOOF WOOF</h1>")
+app.get('/chickens', function sendChickens(req, res){
+  res.send('get chickens')
 })
 
-// THIS WILL NEVER RUN!
-app.get('/dogs', (req, res) => {
-  res.send("MEOW MEOW MEOW")
-})
-
-app.get('/chickens/', (req, res) => {
-  res.send("BOCK! BOCK! BOCK! (get request)")
-})
-// POST ROUTE
-app.post('/chickens', function createChicken(req, res) {
-  res.send("YOU CREATED A NEW CHICKEN  (not really) (Post request)")
+app.post('/chickens', function createChicken(req, res){
+  res.send('Created new chickens')
 })
 
 const greetings = {
-  en: "hello",
-  fr: 'bonjour',
-  ic: 'halló',
-  ja: 'konnichiwa'
+  en: 'Hello',
+  es: 'Hola',
+  fr: 'Bonjour'
 }
 
-// Path Parameters:
-app.get("/greet/:language", (req, res) => {
-  const lang = req.params.language;
-  const greeting = greetings[lang];
-  if (!greeting) return res.send("INVALID LANGUAGE");
-  return res.send(greeting.toUpperCase());
+app.get('/greet/:lang', function getLanguage(req, res){
+  const lang = req.params.lang;
+  res.send(greetings[lang]);
 })
 
-// QUERY STRING!
-app.get('/search', (req, res) => {
-  const { term = 'piggies', sort = 'top' } = req.query;
-  return res.send(`SEARCH PAGE!  Term is: ${term}, sort is: ${sort}`)
+app.get('/search', function(req, res){
+  const {term = 'piggies', sort = 'top'} = req.query; 
+  return res.send(`SEARCH PAGE! Term is: ${term}, sort is: ${sort}`)
 })
 
-// REQ.HEADERS
-app.get('/show-me-headers', (req, res) => {
-  console.log(req.rawHeaders)
-  console.log(req.headers)
-  res.send(req.headers)
+app.get('/show-me-header', function(req, res){
+  return res.send(req.headers)
 })
 
-app.get('/show-language', (req, res) => {
+app.get('/show-language', function(req, res){
   const lang = req.headers['accept-language']
-  res.send(`Your language preference is: ${lang}`)
+  return res.send(`Your language preference is: ${lang}`)
 })
 
-// ACCESSING REQUEST BODY 
-app.post('/register', (req, res) => {
-  res.send(`Welcome, ${req.body.username}!!!`);
+app.post('/register', function(req, res){
+  return res.send(req.body)
 })
 
 app.listen(3000, () => {
